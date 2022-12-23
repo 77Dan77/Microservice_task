@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!-- *для себя* расскомменти если надо, чтобы эти данные добавились в таблицу, но включи ликвибейс и ОТКЛЮЧИ hibernate-ddl в app.prop, а также опустоши БД  -->
+
+
+
+                <changeSet author="компьютер (generated)" id="1671732231745-1">
+                <createSequence sequenceName="currency_id_seq"/>
+            </changeSet>
+            <changeSet author="компьютер (generated)" id="1671732231745-2">
+                <createSequence sequenceName="hibernate_sequence"/>
+            </changeSet>
+            <changeSet author="компьютер (generated)" id="1671732231745-3">
+                <createSequence sequenceName="limits_id_seq"/>
+            </changeSet>
+            <changeSet author="компьютер (generated)" id="1671732231745-4">
+                <createSequence sequenceName="transactions_id_seq"/>
+            </changeSet>
+            <changeSet author="компьютер (generated)" id="1671732231745-5">
+                <createTable tableName="currency">
+                    <column autoIncrement="true" name="id" type="BIGSERIAL">
+                        <constraints primaryKey="true" primaryKeyName="currency_pkey"/>
+                    </column>
+                    <column name="exchange" type="FLOAT8"/>
+                    <column name="date" type="VARCHAR(255)"/>
+                    <column name="currency" type="VARCHAR(255)"/>
+                </createTable>
+            </changeSet>
+            <changeSet author="компьютер (generated)" id="1671732231745-6">
+                <createTable tableName="limits">
+                    <column autoIncrement="true" name="id" type="BIGSERIAL">
+                        <constraints primaryKey="true" primaryKeyName="limits_pkey"/>
+                    </column>
+                    <column name="expense_category" type="VARCHAR(255)"/>
+                    <column name="limit_currency_shortname" type="VARCHAR(255)"/>
+                    <column name="limit_date" type="VARCHAR(255)"/>
+                    <column name="limit_left" type="FLOAT8">
+                        <constraints nullable="false"/>
+                    </column>
+                    <column name="limit_sum" type="FLOAT8">
+                        <constraints nullable="false"/>
+                    </column>
+                    <column name="user_id" type="BIGINT"/>
+                </createTable>
+            </changeSet>
+            <changeSet author="компьютер (generated)" id="1671732231745-7">
+                <createTable tableName="transactions">
+                    <column autoIncrement="true" name="id" type="BIGSERIAL">
+                        <constraints primaryKey="true" primaryKeyName="transactions_pkey"/>
+                    </column>
+                    <column name="account_from" type="BIGINT">
+                        <constraints nullable="false"/>
+                    </column>
+                    <column name="account_to" type="BIGINT">
+                        <constraints nullable="false"/>
+                    </column>
+                    <column name="currency_shortname" type="VARCHAR(255)"/>
+                    <column name="date" type="VARCHAR(255)"/>
+                    <column name="expense_category" type="VARCHAR(255)"/>
+                    <column name="limit_exceeded" type="BOOL">
+                        <constraints nullable="false"/>
+                    </column>
+                    <column name="sum" type="FLOAT8">
+                        <constraints nullable="false"/>
+                    </column>
+                    <column name="user_id" type="BIGINT"/>
+                </createTable>
+            </changeSet>
+            <changeSet author="компьютер (generated)" id="1671732231745-8">
+                <createTable tableName="users">
+                    <column name="id" type="BIGINT">
+                        <constraints nullable="false"/>
+                    </column>
+                    <column name="account_number" type="BIGINT">
+                        <constraints nullable="false"/>
+                    </column>
+                    <column name="fullname" type="VARCHAR(255)"/>
+                </createTable>
+            </changeSet>
+            <changeSet author="компьютер (generated)" id="1671732231745-9">
+                <addPrimaryKey columnNames="id" constraintName="users_pkey" tableName="users"/>
+            </changeSet>
+            <changeSet author="компьютер (generated)" id="1671732231745-10">
+                <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="limits" constraintName="fkgy0ygn2qi543dhqb2ly41w4wp" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
+            </changeSet>
+            <changeSet author="компьютер (generated)" id="1671732231745-11">
+                <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="transactions" constraintName="fkqwv7rmvc8va8rep7piikrojds" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
+            </changeSet>
+
+    <include file="/db/changelog/user-insertion.sql"/>
+
+</databaseChangeLog>
